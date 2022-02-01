@@ -4,6 +4,13 @@
 Welcome to Kobe. A Python-inspired (basically a black mamba) language that leverages the ease of JavaScript. No more curly braces. Clean, efficient, readable code!
 Kobe Bryant easter eggs everywhere.
 ## Features ##
+Kobe’s key features include:
+- Static typing 
+- Loops
+- Nesting
+- No curlies
+- Type inference 
+- Data structures such as arrays
 
 ## Examples ##
 | Kobe                                                 | JavaScript                                                     |
