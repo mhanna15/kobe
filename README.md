@@ -13,12 +13,147 @@ Kobe’s key features include:
 - Data structures such as arrays
 
 ## Code Examples ##
-### Compared with JavaScript ###
-|            	| Kobe                                                 	| JavaScript                                                     	|
-|------------	|------------------------------------------------------	|----------------------------------------------------------------	|
-| for loop   	| ``` loop i, 0 to 9:   print(i) ```                   	| ``` for (let i = 0; i < 10; i++) {   console.log(i); } ```     	|
-| while loop 	| ``` whileJobNotFinished x < 10:   print(x)   x++ ``` 	| ``` let x = 5 while (x < 10) {   console.log(i);   x++; }  ``` 	|
-|            	|                                                      	|                                                                	|
+
+### Functions
+
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
+
+<td>
+
+```javascript
+function add(a, b) {
+  return (a+b);
+}
+```
+
+</td>
+
+<td>
+
+```python
+job score(int a, int b):
+   output a add b
+```
+
+</td>
+</table>
+
+### Repeat
+
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
+
+<td>
+
+None
+
+</td>
+
+<td>
+
+```python
+reps 5:
+  print(“hello”)
+```
+
+</td>
+</table>
+
+### Conditionals
+
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
+
+<td>
+
+```javascript
+let x = 10
+if (x == 10) {
+  console.log(x)
+} else if (x > 10) {
+  console.log("greater")
+} else {
+  console.log("less")
+}
+```
+
+</td>
+
+<td>
+
+```
+alloweth Numeral x be 10
+whether (x tis 10) {
+  speaketh(x)
+}
+subsequently (x nobler 10) {
+  speaketh("greater")
+}
+otherwise {
+  speaketh("less")
+}
+```
+
+</td>
+</table>
+
+### For Loops
+
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
+
+<td>
+
+```javascript
+for (let i = 0; i < 10; i++) {
+  console.log(i);
+}
+```
+
+</td>
+
+<td>
+
+```python
+loop i, 0 to 9:
+  print(i)
+```
+
+</td>
+</table>
+
+### While Loops
+
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
+
+<td>
+
+```javascript
+while (x) {
+  console.log("doing!")
+}
+```
+
+</td>
+
+<td>
+
+```
+whilst(x) {
+  speaketh("doing!")
+}
+```
+
+</td>
+</table>
+
 ### Arithmetic Operations ###
 #### Addition ####
 ``` x add 6 ``` adds 6 to the variable x.
