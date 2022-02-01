@@ -57,7 +57,7 @@ function add(a, b) {
 <td>
 
 ```python
-job score(int a, int b):
+job add(int a, int b):
    output a add b
 ```
 
