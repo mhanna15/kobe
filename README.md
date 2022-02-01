@@ -14,6 +14,30 @@ Kobe’s key features include:
 
 ## Code Examples ##
 
+
+### Print
+
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
+
+<td>
+
+```javascript
+console.log("What’s up")
+```
+
+</td>
+
+<td>
+
+```python
+print("What’s up")
+```
+
+</td>
+</table>
+
 ### Functions
 
 <table>
@@ -62,7 +86,7 @@ reps 5:
 </td>
 </table>
 
-### Conditionals
+### If-Statement
 
 <table>
 <tr> <th>JavaScript</th><th>Kobe</th><tr>
@@ -71,13 +95,9 @@ reps 5:
 <td>
 
 ```javascript
-let x = 10
-if (x == 10) {
-  console.log(x)
-} else if (x > 10) {
-  console.log("greater")
-} else {
-  console.log("less")
+var championships = 100
+if (championships > 50){
+ console.log("You are Kobe")
 }
 ```
 
@@ -85,17 +105,10 @@ if (x == 10) {
 
 <td>
 
-```
-alloweth Numeral x be 10
-whether (x tis 10) {
-  speaketh(x)
-}
-subsequently (x nobler 10) {
-  speaketh("greater")
-}
-otherwise {
-  speaketh("less")
-}
+```python
+int championships = 100
+if championships > 50:
+ print("You are Kobe")
 ```
 
 </td>
@@ -136,8 +149,10 @@ loop i, 0 to 9:
 <td>
 
 ```javascript
-while (x) {
-  console.log("doing!")
+let x = 5
+while (x < 10) {
+ console.log(i);
+ x++;
 }
 ```
 
@@ -145,10 +160,10 @@ while (x) {
 
 <td>
 
-```
-whilst(x) {
-  speaketh("doing!")
-}
+```python
+whileJobNotFinished x < 10:
+ print(x)
+ x++
 ```
 
 </td>
