@@ -6,8 +6,8 @@ Kobe Bryant easter eggs everywhere.
 ## Features ##
 
 ## Examples ##
-| Kobe                                                             | JavaScript                                                                          |
-|------------------------------------------------------------------|-------------------------------------------------------------------------------------|
-| ```<br>loop i, 0 to 9:<br>  print(i)<br>```                      | ```<br>for (let i = 0; i < 10; i++) {<br>  console.log(i);<br>}<br>```              |
-| ```<br>whileJobNotFinished x < 10:<br>  print(x)<br>  x++<br>``` | ```<br>let x = 5<br>while (x < 10) {<br>  console.log(i);<br>  x++;<br>}<br><br>``` |
-|                                                                  |                                                                                     |
+| Kobe                                                 | JavaScript                                                     |
+|------------------------------------------------------|----------------------------------------------------------------|
+| ``` loop i, 0 to 9: print(i) ```                   | ``` for (let i = 0; i < 10; i++) {   console.log(i); } ```     |
+| ``` whileJobNotFinished x < 10:   print(x)   x++ ``` | ``` let x = 5 while (x < 10) {   console.log(i);   x++; }  ``` |
+|                                                      |                                                                |
