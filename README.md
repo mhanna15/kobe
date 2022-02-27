@@ -140,7 +140,7 @@ for (let i = 0; i < 10; i++) {
 <td>
   
 ```javascript
-loop (num i, 0 to 9) {
+coil (num i, 0 to 9) {
   print(i)
 }
 ```
@@ -170,7 +170,7 @@ while (x < 10) {
 
 ```javascript
 
-whileJobNotFinished(x < 10) {
+grindUntil(x < 10) {
  print(x)
  x++
 }
