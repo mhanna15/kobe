@@ -52,7 +52,7 @@ print("What’s up")
 
 ```javascript
 function add(a, b) {
-  return a + b;
+  return a + b
 }
 ```
 
@@ -62,7 +62,7 @@ function add(a, b) {
  
 ```javascript
 job add(a, b) {
-  output a add b;
+  output a add b
 }
 ```
 
@@ -85,7 +85,7 @@ None
   
 ```javascript
 reps(5) {
-  print("hello");
+  print("hello")
 }
 ```
 
@@ -103,7 +103,7 @@ reps(5) {
 ```javascript
 var championships = 100;
 if (championships > 50) {
-  console.log("You are Kobe");
+  console.log("You are Kobe")
 }
 ```
 
@@ -112,9 +112,9 @@ if (championships > 50) {
 <td>
   
 ```javascript
-championships = 100
+num championships = 100
 if (championships > 50) {
- print("You are Kobe");
+ print("You are Kobe")
 }
 ```
 
@@ -140,7 +140,7 @@ for (let i = 0; i < 10; i++) {
 <td>
   
 ```javascript
-loop (i, 0 to 9) {
+loop (num i, 0 to 9) {
   console.log(i);
 }
 ```
@@ -169,6 +169,7 @@ while (x < 10) {
 <td>
 
 ```javascript
+
 whileJobNotFinished(x < 10) {
  print(x)
  x++
