@@ -51,7 +51,7 @@ print("What’s up")
 <td>
 
 ```javascript
-exacute add(a, b) {
+function add(a, b) {
   return a + b
 }
 ```
