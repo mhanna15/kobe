@@ -78,10 +78,11 @@ None
 </td>
 
 <td>
-
-```python
-reps 5:
-  print(“hello”)
+  
+```javascript
+reps(5) {
+  print("hello");
+}
 ```
 
 </td>
@@ -105,11 +106,12 @@ if (championships > 50){
 </td>
 
 <td>
-
-```python
-int championships = 100
-if championships > 50:
- print("You are Kobe")
+  
+```javascript
+championships = 100
+if (championships > 50) {
+ print("You are Kobe");
+}
 ```
 
 </td>
@@ -132,10 +134,11 @@ for (let i = 0; i < 10; i++) {
 </td>
 
 <td>
-
-```python
-loop i, 0 to 9:
-  print(i)
+  
+```javascript
+loop (i, 0 to 9) {
+  console.log(i);
+}
 ```
 
 </td>
@@ -161,10 +164,11 @@ while (x < 10) {
 
 <td>
 
-```python
-whileJobNotFinished x < 10:
+```javascript
+whileJobNotFinished(x < 10) {
  print(x)
  x++
+}
 ```
 
 </td>
