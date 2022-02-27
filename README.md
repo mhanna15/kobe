@@ -141,7 +141,7 @@ for (let i = 0; i < 10; i++) {
   
 ```javascript
 loop (num i, 0 to 9) {
-  console.log(i);
+  print(i)
 }
 ```
 
