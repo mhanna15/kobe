@@ -9,7 +9,6 @@ Kobe’s key features include:
 - Static typing 
 - Loops
 - Nesting
-- No curlies
 - Type inference 
 - Data structures such as arrays
 
@@ -56,10 +55,11 @@ function add(a, b) {
 </td>
 
 <td>
-
-```python
-job add(int a, int b):
-   output a add b
+ 
+```javascript
+job add(a, b) {
+  output a add b;
+}
 ```
 
 </td>
