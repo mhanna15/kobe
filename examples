@@ -1,0 +1,26 @@
+'''
+#for loops:
+loop i, 0 to 9:
+ print(i)
+
+#while loops:
+whileJobNotFinished x < 10:
+ print(x)
+ x++
+
+#conditional:
+int championships = 100
+if championships > 50:
+ print("You are Kobe") 
+
+#print
+print("What’s up")
+
+#repeat
+reps 5:
+  print(“hello”)
+
+#function:
+job score(int a, int b):
+   output a add b
+'''
