@@ -1,7 +1,7 @@
 Kobe {
   Program   = Statement+
   Statement = Type id "=" Exp                      -- vardec
-            | job id "(" Params ")" JobChunk  -- fundec
+            | Type job id "(" Params ")" JobChunk  -- fundec
             | id "=" Exp                           -- assign
             | "print" Exp                           -- print
             | if Exp Chunk ("elif" Exp Chunk)* -- if
@@ -20,7 +20,7 @@ Kobe {
   Exp      = Exp "or" Exp1                          -- or
   			| Exp "and" Exp1						-- and
             | Exp1
-  Exp1     = Exp1 conditional Exp2                          -- binary
+  Exp1     = Exp1 compare Exp2                          -- binary
             | Exp2
   Exp2      =  logic Exp3 	-- precursor
             | Exp3
@@ -29,8 +29,8 @@ Kobe {
   Exp4      = Exp4 ("multiply" | "divide" | "mod") Exp5             -- binary
             | Exp5
   Exp5      = Exp5 "to the" Exp6                          -- binary
-  			| sqrt Exp6 										-- sqrt
-            | abs Exp										-- abs
+  			| sqrt Exp6 										-- unary
+            | abs Exp										-- unary
             | Exp6
   Exp6      = num
             | baal
@@ -46,7 +46,7 @@ Kobe {
  
   Type = "num"
   			| "quote"
-            | "baal"
+        | "baal"
             
   keyword   = reps | job | grindUntil | or | and | output | if
 
@@ -62,7 +62,7 @@ Kobe {
   or = "or" ~idchar
   and = "and" ~idchar
   logic = ("!")
-  conditional = ("<" | ">" | "==" | "!=")
+  compare = ("<" | ">" | "==" | "!=")
   baal = "true" | "false"
   num       = digit+ ("." digit+)?
   quote = "\"" (~"\\" ~"\"" ~"\n" any )* "\""
