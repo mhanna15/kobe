@@ -2,8 +2,8 @@ import assert from "assert/strict";
 import util from "util";
 import ast from "../src/ast.js";
 
-const source = `x=5
-                job addFive(num x){output x add 5}`;
+const source = `num x=5
+                num job addFive(num x){output x add 5}`;
 
 const expected = `   1 | Program statements=[#2,#4,#6]
    2 | VariableDeclaration variable=(Id,"x") initializer=#3
@@ -15,7 +15,7 @@ const expected = `   1 | Program statements=[#2,#4,#6]
    9 | Call callee=(Id,"f") args=[(Id,"x")]`;
 
 describe("The AST generator", () => {
-  it("produces the expected AST for all node types", () => {
-    assert.deepEqual(util.format(ast(source)), expected);
-  });
+    it("produces the expected AST for all node types", () => {
+        assert.deepEqual(util.format(ast(source)), expected);
+    });
 });

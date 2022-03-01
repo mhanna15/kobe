@@ -2,6 +2,7 @@ Kobe {
   Program   = Statement+
   Statement = Type id "=" Exp                                       -- vardec
             | Type job id "(" Params ")" JobChunk                   -- fundec
+            | job id "(" Params ")" JobChunk                        -- voidfundec
             | id "=" Exp                                            -- assign
             | "print" Exp                                           -- print
             | if Exp Chunk ("elif" Exp Chunk)*                      -- if
@@ -15,23 +16,23 @@ Kobe {
   Chunk     = "{" Statement* "}"
   Until     = "(" Type id"," Exp "to" Exp ")"
   
-  
 
-  Exp       = Exp "or" Exp1                                         -- or
-  			    | Exp "and" Exp1						                            -- and
+  Exp       = ("-" | "!") Exp7                        -- unary
             | Exp1
-  Exp1      = Exp1 compare Exp2                                     -- binary
+  Exp1      = Exp1 "or" Exp2                          -- binary
             | Exp2
-  Exp2      =  logic Exp3                                         	-- precursor
+  Exp2      = Exp2 "and" Exp3                          -- binary
             | Exp3
-  Exp3      = Exp3 ("+=" | "-=" | "add" | "minus") Exp4             -- binary
+  Exp3      = Exp3 compare Exp4                                     -- binary
             | Exp4
-  Exp4      = Exp4 ("multiply" | "divide" | "mod") Exp5             -- binary
+  Exp4      = Exp4 ("+=" | "-=" | "add" | "minus") Exp5 -- binary
             | Exp5
-  Exp5      = Exp5 "to the" Exp6                                    -- binary
-  			    | sqrt Exp6 										                        -- unary
+  Exp5      = Exp5 ("multiply" | "divide" | "mod") Exp6             -- binary
             | Exp6
-  Exp6      = num
+  Exp6      = Exp6 "to the" Exp7                                    -- binary
+  			    | sqrt Exp7 										                        -- unary
+            | Exp7
+  Exp7      = num
             | baal
             | id
             | quote
@@ -59,7 +60,7 @@ Kobe {
   sqrt      = "sqrt" ~idchar
   or        = "or" ~idchar
   and       = "and" ~idchar
-  logic     = ("!")
+  prelogic     = ("!" | "-")
   compare   = ("<" | ">" | "==" | "!=")
   baal      = "true" | "false"
   num       = digit+ ("." digit+)?
