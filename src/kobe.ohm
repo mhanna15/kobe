@@ -1,73 +1,71 @@
 Kobe {
   Program   = Statement+
-  Statement = Type id "=" Exp                      -- vardec
-            | Type job id "(" Params ")" JobChunk  -- fundec
-            | id "=" Exp                           -- assign
-            | "print" Exp                           -- print
-            | if Exp Chunk ("elif" Exp Chunk)* -- if
-            | coil Until Chunk				-- loop
-            | grindUntil Exp Chunk                         -- while
-            | sqrt "(" Exp ")"	-- sqrt
-            | reps"(" Exp ")" Chunk	-- repeat
+  Statement = Type id "=" Exp                                       -- vardec
+            | Type job id "(" Params ")" JobChunk                   -- fundec
+            | id "=" Exp                                            -- assign
+            | "print" Exp                                           -- print
+            | if Exp Chunk ("elif" Exp Chunk)*                      -- if
+            | coil Until Chunk				                              -- loop
+            | grindUntil Exp Chunk                                  -- while
+            | sqrt "(" Exp ")"	                                    -- sqrt
+            | reps"(" Exp ")" Chunk	                                -- repeat
             | Increment 
             | Call
-  JobChunk = "{" Statement* ("output" Exp)?"}"         
-  Chunk    = "{" Statement* "}"
-  Until = "(" Type id"," Exp "to" Exp ")"
+  JobChunk  = "{" Statement* ("output" Exp)?"}"         
+  Chunk     = "{" Statement* "}"
+  Until     = "(" Type id"," Exp "to" Exp ")"
   
   
 
-  Exp      = Exp "or" Exp1                          -- or
-  			| Exp "and" Exp1						-- and
+  Exp       = Exp "or" Exp1                                         -- or
+  			    | Exp "and" Exp1						                            -- and
             | Exp1
-  Exp1     = Exp1 compare Exp2                          -- binary
+  Exp1      = Exp1 compare Exp2                                     -- binary
             | Exp2
-  Exp2      =  logic Exp3 	-- precursor
+  Exp2      =  logic Exp3                                         	-- precursor
             | Exp3
-  Exp3      = Exp3 ("+=" | "-=" | "add" | "minus") Exp4                   -- binary
+  Exp3      = Exp3 ("+=" | "-=" | "add" | "minus") Exp4             -- binary
             | Exp4
   Exp4      = Exp4 ("multiply" | "divide" | "mod") Exp5             -- binary
             | Exp5
-  Exp5      = Exp5 "to the" Exp6                          -- binary
-  			| sqrt Exp6 										-- unary
-            | abs Exp										-- unary
+  Exp5      = Exp5 "to the" Exp6                                    -- binary
+  			    | sqrt Exp6 										                        -- unary
             | Exp6
   Exp6      = num
             | baal
             | id
             | quote
-            | "(" Exp ")"                             -- parens
+            | "(" Exp ")"                                           -- parens
 
   Call      = id "(" Args ")"
   Params    = ListOf<IndivID, ",">
-  IndivID = Type id
+  IndivID   = Type id
   Args      = ListOf<Exp, ",">
  
  
-  Type = "num"
-  			| "quote"
-        | "baal"
+  Type      = "num"
+            | "quote"
+            | "baal"
             
   keyword   = reps | job | grindUntil | or | and | output | if
 
-  job  = "job" ~idchar
-  output = "output" ~idchar
-  if = "if" ~idchar
-  abs = "abs" ~idchar
-  reps = "reps" ~idchar
-  coil     = "coil" ~idchar
-  grindUntil     = "grindUntil" ~idchar
+  job       = "job" ~idchar
+  output    = "output" ~idchar
+  if        = "if" ~idchar
+  reps      = "reps" ~idchar
+  coil      = "coil" ~idchar
+  grindUntil= "grindUntil" ~idchar
   print     = "print" ~idchar
-  sqrt = "sqrt" ~idchar
-  or = "or" ~idchar
-  and = "and" ~idchar
-  logic = ("!")
-  compare = ("<" | ">" | "==" | "!=")
-  baal = "true" | "false"
+  sqrt      = "sqrt" ~idchar
+  or        = "or" ~idchar
+  and       = "and" ~idchar
+  logic     = ("!")
+  compare   = ("<" | ">" | "==" | "!=")
+  baal      = "true" | "false"
   num       = digit+ ("." digit+)?
-  quote = "\"" (~"\\" ~"\"" ~"\n" any )* "\""
+  quote     = "\"" (~"\\" ~"\"" ~"\n" any )* "\""
   id        = ~keyword letter idchar*
   Increment = id ("++" | "--")
   idchar    = letter | digit | "_"
-  space    += "//" (~"\n" any)* ("\n" | end)          -- comment
+  space    += "//" (~"\n" any)* ("\n" | end)                        -- comment
 }
