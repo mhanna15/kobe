@@ -61,7 +61,7 @@ function add(a, b) {
 <td>
  
 ```javascript
-job add(num a, num b) {
+num job add(num a, num b) {
   output a add b
 }
 ```
