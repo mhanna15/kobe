@@ -41,11 +41,7 @@ const astBuilder = kobeGrammar.createSemantics().addOperation("ast", {
         return new core.UnaryExpression(op.sourceString, operand.ast());
     },
     Exp1_binary(left, _or, right) {
-        return new core.BinaryExpression(
-            "or",
-            left.ast(),
-            right.ast()
-        );
+        return new core.BinaryExpression("or", left.ast(), right.ast());
     },
     Exp2_binary(left, _and, right) {
         return new core.BinaryExpression("and", left.ast(), right.ast());
@@ -57,24 +53,31 @@ const astBuilder = kobeGrammar.createSemantics().addOperation("ast", {
             right.ast()
         );
     },
-    Exp4_binary(left, addop, right) {
+    Exp4_binary(left, addeqop, right) {
+        return new core.BinaryExpression(
+            addeqop.sourceString,
+            left.ast(),
+            right.ast()
+        );
+    },
+    Exp5_binary(left, addop, right) {
         return new core.BinaryExpression(
             addop.sourceString,
             left.ast(),
             right.ast()
         );
     },
-    Exp5_binary(left, mulop, right) {
+    Exp6_binary(left, mulop, right) {
         return new core.BinaryExpression(
             mulop.sourceString,
             left.ast(),
             right.ast()
         );
     },
-    Exp6_binary(left, _power, right) {
+    Exp7_binary(left, _power, right) {
         return new core.BinaryExpression("to the", left.ast(), right.ast());
     },
-    Exp7_parens(_open, expression, _close) {
+    Exp8_parens(_open, expression, _close) {
         return expression.ast();
     },
     Call(id, _open, args, _close) {

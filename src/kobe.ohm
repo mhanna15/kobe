@@ -17,7 +17,7 @@ Kobe {
   Until     = "(" Type id"," Exp "to" Exp ")"
   
 
-  Exp       = ("-" | "!") Exp7                        -- unary
+  Exp       = ("-" | "!") Exp8                        -- unary
             | Exp1
   Exp1      = Exp1 "or" Exp2                          -- binary
             | Exp2
@@ -25,14 +25,18 @@ Kobe {
             | Exp3
   Exp3      = Exp3 compare Exp4                                     -- binary
             | Exp4
-  Exp4      = Exp4 ("+=" | "-=" | "add" | "minus") Exp5 -- binary
+  Exp4      = Exp4 ("plusequal" | "minusequal") Exp5                   -- binary            
             | Exp5
-  Exp5      = Exp5 ("multiply" | "divide" | "mod") Exp6             -- binary
+  Exp5      = Exp5 ("add" | "minus") Exp6 -- binary
             | Exp6
-  Exp6      = Exp6 "to the" Exp7                                    -- binary
-  			    | sqrt Exp7 										                        -- unary
+  Exp6      = Exp6  ("multiply" | "divide" | "mod") Exp7              -- binary
             | Exp7
-  Exp7      = num
+
+  Exp7       = Exp7 "to the" Exp8                                    -- binary
+  			    | sqrt Exp8 										                        -- unary
+            | Exp8
+
+  Exp8       = num
             | baal
             | id
             | quote
@@ -48,7 +52,7 @@ Kobe {
             | "quote"
             | "baal"
             
-  keyword   = reps | job | grindUntil | or | and | output | if
+  keyword   = reps | job | grindUntil | or | and | output | if | coil
 
   job       = "job" ~idchar
   output    = "output" ~idchar
@@ -60,8 +64,10 @@ Kobe {
   sqrt      = "sqrt" ~idchar
   or        = "or" ~idchar
   and       = "and" ~idchar
-  prelogic     = ("!" | "-")
-  compare   = ("<" | ">" | "==" | "!=")
+  prelogic  = ("!" | "-")
+
+  compare  = ("<" | ">" |"==" | "!=")
+
   baal      = "true" | "false"
   num       = digit+ ("." digit+)?
   quote     = "\"" (~"\\" ~"\"" ~"\n" any )* "\""
