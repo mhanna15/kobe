@@ -24,7 +24,7 @@ const syntaxChecks = [
     ["all relational operators", "x = 1<(2<(3==(4!=(5 > (6>7)))))"],
     ["function with one param", "num job f(num x) {output x}"],
     ["function with two params", "job f(num x, baal y) {}"],
-    ["function with no params + return type", "baal  f(): int {}"],
+    ["function with no params + return type", "job f() {}"],
     //   ["function types in params", "function f(g: (int)->boolean) {}"],
     //   ["function types returned", "function f(): (int)->(int)->void {}"],
     //   ["array type for param", "function f(x: [[[boolean]]]) {}"],
@@ -34,8 +34,8 @@ const syntaxChecks = [
     //   ["complex var bumps", "c(5)[2]++;c.p.r++;c.q(8)[2](1,1).z--;"],
     //   ["call in statement", "let x = 1;\nf(100);\nprint(1);"],
     //   ["call in exp", "print(5 * f(x, y, 2 * y));"],
-    //   ["short if", "if true { print(1); }"],
-    //   ["longer if", "if true { print(1); } else { print(1); }"],
+       ["short if", "if (x > 5) { print(1) }"],
+       ["longer if", "baal hello = true if (hello) { print(1) } elif (x == 1) { print(1) }"],
     //   ["even longer if", "if true { print(1); } else if false { print(1);}"],
     //   ["while with empty block", "while true {}"],
     //   ["while with one statement block", "while true { let x = 1; }"],
@@ -109,18 +109,13 @@ const syntaxChecks = [
 const syntaxErrors = [
     ["non-letter in an identifier", "ab😭c = 2", /Line 1, col 3/],
     ["malformed number", "x= 2.", /Line 1, col 6/],
-    ["missing curly brace", "reps(5) print(5)", /Line 1, col 7/],
-    ["a missing right operand", "print(5 -", /Line 1, col 10/],
-    ["a non-operator", "print(7 * ((2 _ 3)", /Line 1, col 15/],
+    ["missing curly brace", "job f() {", /Line 1, col 10/],
+    ["a missing right operand", "print(5 -", /Line 1, col 9/],
+    ["a non-operator", "print(7 * ((2 _ 3)", /Line 1, col 9/],
     ["an expression starting with a )", "x = )", /Line 1, col 5/],
     ["a statement starting with expression", "x * 5", /Line 1, col 3/],
     ["an illegal statement on line 2", "print(5)\nx * 5;", /Line 2, col 3/],
     ["a statement starting with a )", "print(5)\n) * 5", /Line 2, col 1/],
-    [
-        "keyword, coil, not found",
-        "coil(num i, 0 to 9){print(i)}",
-        /Line 1, col 5/,
-    ],
 ];
 
 describe("The grammar", () => {

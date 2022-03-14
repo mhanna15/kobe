@@ -49,6 +49,12 @@ export class PrintStatement {
   }
 }
 
+export class returnStatement {
+  constructor(argument) {
+    Object.assign(this, { argument });
+  }
+}
+
 export class Call {
   constructor(callee, args) {
     Object.assign(this, { callee, args });

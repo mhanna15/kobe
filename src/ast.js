@@ -8,21 +8,14 @@ const astBuilder = kobeGrammar.createSemantics().addOperation("ast", {
     Program(statements) {
         return new core.Program(statements.ast());
     },
-    Statement_vardec(type, id, _eq, initializer) {
-        return new core.VariableDeclaration(
-            type.ast(),
-            id.ast(),
-            initializer.ast()
-        );
+    Statement_vardec(_let, id, _eq, initializer) {
+        return new core.VariableDeclaration(id.ast(), initializer.ast());
     },
-    Statement_fundec(returnType, _job, id, _open, params, _close, chunk) {
+    Statement_fundec(_fun, id, _open, params, _close, _equals, JobChunk) {
         return new core.FunctionDeclaration(
-            new core.Function(
-                id.ast(),
-                params.asIteration().ast(),
-                returnType.ast()
-            ),
-            chunk.ast()
+            id.ast(),
+            params.asIteration().ast(),
+            JobChunk.ast()
         );
     },
     Statement_assign(id, _eq, expression) {
@@ -31,11 +24,17 @@ const astBuilder = kobeGrammar.createSemantics().addOperation("ast", {
     Statement_print(_print, argument) {
         return new core.PrintStatement(argument.ast());
     },
-    Statement_while(_grindUntil, test, chunk) {
-        return new core.WhileStatement(test.ast(), chunk.ast());
+    Statement_while(_grindUntil, test, Chunk) {
+        return new core.WhileStatement(test.ast(), Chunk.ast());
+    },
+    Statement_return(_output, expression) {
+        return new core.returnStatement(expression.ast());
     },
     Chunk(_open, body, _close) {
         return body.ast();
+    },
+    JobChunk(_open, body, _close, statement_return) {
+        return body.ast(), statement_return.ast();
     },
     Exp_unary(op, operand) {
         return new core.UnaryExpression(op.sourceString, operand.ast());

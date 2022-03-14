@@ -10,12 +10,13 @@ Kobe {
             | grindUntil Exp Chunk                                  -- while
             | sqrt "(" Exp ")"	                                    -- sqrt
             | reps"(" Exp ")" Chunk	                                -- repeat
+            | "output" Exp                                          -- return
             | Increment 
             | Call
-  JobChunk  = "{" Statement* ("output" Exp)?"}"         
+  JobChunk  = "{" Statement* (Statement)?"}"         
   Chunk     = "{" Statement* "}"
-  Until     = "(" Type id"," Exp "to" Exp ")"
-  
+  Until     = "(" Type id"," Range ")"
+  Range     =  Exp "to" Exp  
 
   Exp       = ("-" | "!") Exp8                        -- unary
             | Exp1
@@ -42,6 +43,7 @@ Kobe {
             | quote
             | "(" Exp ")"                                           -- parens
 
+  
   Call      = id "(" Args ")"
   Params    = ListOf<IndivID, ",">
   IndivID   = Type id
@@ -65,6 +67,7 @@ Kobe {
   or        = "or" ~idchar
   and       = "and" ~idchar
   prelogic  = ("!" | "-")
+
 
   compare  = ("<" | ">" |"==" | "!=")
 
