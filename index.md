@@ -1,8 +1,9 @@
-## Kobe
+# Kobe
 
-You can use the [editor on GitHub](https://github.com/mhanna15/kobe/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+### Background
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Welcome to Kobe. A Python-inspired (basically a black mamba) language that leverages the ease of JavaScript. Clean, efficient, readable code!
+Kobe Bryant easter eggs everywhere.
 
 ### Markdown
 
