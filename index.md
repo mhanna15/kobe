@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## Kobe
 
 You can use the [editor on GitHub](https://github.com/mhanna15/kobe/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
