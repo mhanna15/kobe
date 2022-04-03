@@ -1,34 +1,214 @@
+![Group 5 (5)](https://user-images.githubusercontent.com/29997042/151932161-e30ed8e6-7721-49c5-81a5-d20aa46bdc70.png)
+
 # Kobe
 
-### Background
+## Background
 
 Welcome to Kobe. A Python-inspired (basically a black mamba) language that leverages the ease of JavaScript. Clean, efficient, readable code!
 Kobe Bryant easter eggs everywhere.
 
-### Markdown
+## Features
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Kobe’s key features include:
 
-```markdown
-Syntax highlighted code block
+- Static typing
+- Loops
+- Nesting
+- Type inference
+- Data structures such as arrays
 
-# Header 1
-## Header 2
-### Header 3
+## Code Examples
 
-- Bulleted
-- List
+### Print
 
-1. Numbered
-2. List
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
 
-**Bold** and _Italic_ and `Code` text
+<td>
 
-[Link](url) and ![Image](src)
+```javascript
+console.log("What’s up");
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+</td>
 
-### Jekyll Themes
+<td>
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/mhanna15/kobe/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+```python
+print("What’s up")
+```
+
+</td>
+</table>
+
+### Functions
+
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
+
+<td>
+
+```javascript
+function add(a, b) {
+  return a + b
+}
+```
+
+</td>
+
+<td>
+ 
+```javascript
+num job add(num a, num b) {
+  output a add b
+}
+```
+
+</td>
+</table>
+
+### Repeat
+
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
+
+<td>
+
+None
+
+</td>
+
+<td>
+  
+```javascript
+reps(5) {
+  print("hello")
+}
+```
+
+</td>
+</table>
+
+### If-Statement
+
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
+
+<td>
+
+```javascript
+var championships = 100;
+if (championships > 50) {
+  console.log("You are Kobe")
+}
+```
+
+</td>
+
+<td>
+  
+```javascript
+num championships = 100
+if (championships > 50) {
+ print("You are Kobe")
+}
+```
+
+</td>
+</table>
+
+### For Loops
+
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
+
+<td>
+
+```javascript
+for (let i = 0; i < 10; i++) {
+  console.log(i);
+}
+```
+
+</td>
+
+<td>
+  
+```javascript
+coil (num i, 0 to 9) {
+  print(i)
+}
+```
+
+</td>
+</table>
+
+### While Loops
+
+<table>
+<tr> <th>JavaScript</th><th>Kobe</th><tr>
+</tr>
+
+<td>
+
+```javascript
+let x = 5;
+while (x < 10) {
+  console.log(i);
+  x++;
+}
+```
+
+</td>
+
+<td>
+
+```javascript
+
+grindUntil(x < 10) {
+ print(x)
+ x++
+}
+```
+
+</td>
+</table>
+
+### Arithmetic Operations
+
+#### Addition
+
+`x add 6` adds 6 to the variable x.
+
+#### Subtraction
+
+`x minus 6` subtracts 6 from the variable x.
+
+#### Multiplication
+
+`x multiply 6` gets the product of 6 and x.
+
+#### Division
+
+`x divide 6` gets the quotient of 6 and x.
+
+#### Modulus
+
+`x mod 6` gets the remainder of x divided by 6.
+
+#### Exponents
+
+`x to the 6` raises x to the 6th power.
+
+#### Absolute value
+
+`abs (x)` is the absolute value of x.
+
+#### Square root
+
+` sqrt(x)` gets the square root of x.
