@@ -16,9 +16,8 @@ const astBuilder = kobeGrammar.createSemantics().addOperation("ast", {
     );
   },
   Statement_fundec(funcType, _job, id, _open, params, _close, JobChunk) {
-    // console.log("params", params.asIteration());
     return new core.FunctionDeclaration(
-      new core.Function(id.ast(), params.asIteration().ast(), funcType.ast()),
+      new core.Function(funcType.ast(), id.ast(), params.asIteration().ast()),
       JobChunk.ast()
     );
   },
@@ -34,7 +33,7 @@ const astBuilder = kobeGrammar.createSemantics().addOperation("ast", {
   Statement_while(_grindUntil, test, Chunk) {
     return new core.WhileStatement(test.ast(), Chunk.ast());
   },
-  Statement_return(_output, expression) {
+  Return_return(_output, expression) {
     return new core.returnStatement(expression.ast());
   },
   Chunk(_open, body, _close) {

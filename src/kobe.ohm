@@ -8,14 +8,14 @@ Kobe {
             | coil Until Chunk				                              -- loop
             | grindUntil Exp Chunk                                  -- while
             | sqrt "(" Exp ")"	                                    -- sqrt
-            | "output" Exp                                          -- return
             | reps"(" Exp ")" Chunk	                                -- repeat
             | Increment 
             | Call         
   Chunk     = "{" Statement* "}"
-  JobChunk  = "{" Statement* (Statement)? "}"
-  Until     = "(" Type id"," Range ")"
+  JobChunk  = "{" Statement* (Return)? "}"
+  Until     = "(" Param "," Range ")"
   Range     =  Exp "to" Exp  
+  Return    = "output" Exp                                          -- return
 
 
   Exp       = ("-" | "!") Exp8                        -- unary
