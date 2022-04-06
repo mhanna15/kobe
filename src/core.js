@@ -19,6 +19,25 @@ export class Program {
   }
 }
 
+export class TypeDeclaration {
+  constructor(type) {
+    this.type = type;
+  }
+}
+
+export class Type {
+  static BOOLEAN = new Type("boolean");
+  static INT = new Type("int");
+  static FLOAT = new Type("float");
+  static DOUBLE = new Type("double");
+  static STRING = new Type("string");
+  static VOID = new Type("void");
+  //static ANY = new Type("any");
+  constructor(description) {
+    Object.assign(this, { description });
+  }
+}
+
 export class VariableDeclaration {
   constructor(type, variable, initializer) {
     Object.assign(this, { type, variable, initializer });
@@ -72,6 +91,37 @@ export class IfStatement {
   // Example: if x < 3 { shoot() } (elif ....)
   constructor(test, consequent, alternate) {
     Object.assign(this, { test, consequent, alternate });
+  }
+}
+
+export class RepeatStatement {
+  constructor(count, body) {
+    Object.assign(this, { count, body });
+  }
+}
+
+export class ArrayType extends Type {
+  constructor(baseType) {
+    super(`[${baseType.desccription}]`);
+    this.baseType = baseType;
+  }
+}
+
+export class ForStatement {
+  constructor(iterator, collection, body) {
+    Object.assign(this, { iterator, collection, body });
+  }
+}
+
+export class Increment {
+  //count++
+  constructor(variable) {
+    this.variable = variable;
+  }
+}
+export class Decrement {
+  constructor(variable) {
+    this.variable = variable;
   }
 }
 
