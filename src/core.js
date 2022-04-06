@@ -26,8 +26,8 @@ export class VariableDeclaration {
 }
 
 export class FunctionDeclaration {
-  constructor(fun, body) {
-    Object.assign(this, { fun, body });
+  constructor(fun, chunk) {
+    Object.assign(this, { fun, chunk });
   }
 }
 
@@ -56,8 +56,22 @@ export class PrintStatement {
 }
 
 export class returnStatement {
-  constructor(argument) {
-    Object.assign(this, { argument });
+  constructor(expression) {
+    this.expression = expression;
+  }
+}
+
+export class CoilStatement {
+  // Example: coil (num i, 0 to 5) { process(num x); }
+  constructor(variable, low, high, body) {
+    Object.assign(this, { variable, low, high, body });
+  }
+}
+
+export class IfStatement {
+  // Example: if x < 3 { shoot() } (elif ....)
+  constructor(test, consequent, alternate) {
+    Object.assign(this, { test, consequent, alternate });
   }
 }
 
@@ -98,8 +112,8 @@ export class Variable {
 }
 
 export class Function {
-  constructor(id, param, returnType) {
-    Object.assign(this, { id, param, returnType });
+  constructor(returnType, id, param) {
+    Object.assign(this, { returnType, id, param });
   }
 }
 
