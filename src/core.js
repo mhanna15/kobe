@@ -7,6 +7,12 @@
 
 import util from "util";
 
+export class Parameter {
+  constructor(type, name) {
+    Object.assign(this, { type, name });
+  }
+}
+
 export class Program {
   constructor(statements) {
     this.statements = statements;
@@ -20,8 +26,8 @@ export class VariableDeclaration {
 }
 
 export class FunctionDeclaration {
-  constructor(fun, params, body) {
-    Object.assign(this, { fun, params, body });
+  constructor(fun, body) {
+    Object.assign(this, { fun, body });
   }
 }
 
@@ -92,8 +98,8 @@ export class Variable {
 }
 
 export class Function {
-  constructor(name, paramCount, returnType) {
-    Object.assign(this, { name, paramCount, returnType });
+  constructor(id, param, returnType) {
+    Object.assign(this, { id, param, returnType });
   }
 }
 

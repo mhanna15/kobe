@@ -2,21 +2,21 @@ Kobe {
   Program   = Statement+
   Statement = Type id "=" Exp                                       -- vardec
             | Type job id "(" Params ")" JobChunk                   -- fundec
-            | job id "(" Params ")" JobChunk                        -- voidfundec
             | id "=" Exp                                            -- assign
             | "print" Exp                                           -- print
             | if Exp Chunk ("elif" Exp Chunk)*                      -- if
             | coil Until Chunk				                              -- loop
             | grindUntil Exp Chunk                                  -- while
             | sqrt "(" Exp ")"	                                    -- sqrt
-            | reps"(" Exp ")" Chunk	                                -- repeat
             | "output" Exp                                          -- return
+            | reps"(" Exp ")" Chunk	                                -- repeat
             | Increment 
-            | Call
-  JobChunk  = "{" Statement* (Statement)?"}"         
+            | Call         
   Chunk     = "{" Statement* "}"
+  JobChunk  = "{" Statement* (Statement)? "}"
   Until     = "(" Type id"," Range ")"
   Range     =  Exp "to" Exp  
+
 
   Exp       = ("-" | "!") Exp8                        -- unary
             | Exp1
@@ -45,14 +45,15 @@ Kobe {
 
   
   Call      = id "(" Args ")"
-  Params    = ListOf<IndivID, ",">
-  IndivID   = Type id
+  Params    = ListOf<Param, ",">
+  Param     = Type id                                               -- param
   Args      = ListOf<Exp, ",">
  
  
   Type      = "num"
             | "quote"
             | "baal"
+            | "void"
             
   keyword   = reps | job | grindUntil | or | and | output | if | coil
 
