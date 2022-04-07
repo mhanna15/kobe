@@ -4,14 +4,15 @@ Kobe {
             | Type job id "(" Params ")" JobChunk                   -- fundec
             | id "=" Exp                                            -- assign
             | "print" Exp                                           -- print
-            | if Exp Chunk ("elif" Exp Chunk)*                      -- if
+            | if Exp Chunk (Elif)?                                  -- if
             | coil Until Chunk				                              -- coil
             | grindUntil Exp Chunk                                  -- grind
-            | sqrt "(" Exp ")"	                                    -- sqrt
+            | sqrt"(" Exp ")"	                                    -- sqrt
             | reps"(" Exp ")" Chunk	                                -- repeat
             | Increment 
             | Call         
   Chunk     = "{" Statement* "}"
+  Elif      = "elif" Exp Chunk                                      -- elif
   JobChunk  = "{" Statement* (Return)? "}"
   Until     = "(" Param "," Range ")"                               -- until
   Range     =  Exp "to" Exp                                         -- range

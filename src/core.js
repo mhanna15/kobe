@@ -54,19 +54,13 @@ export class Assignment {
   }
 }
 
-export class WhileStatement {
-  constructor(test, body) {
-    Object.assign(this, { test, body });
-  }
-}
-
 export class PrintStatement {
   constructor(argument) {
     Object.assign(this, { argument });
   }
 }
 
-export class returnStatement {
+export class OutputStatement {
   constructor(expression) {
     this.expression = expression;
   }
@@ -81,8 +75,8 @@ export class CoilStatement {
 
 export class GrindUntilStatement {
   // Example: grindUntil(x < 5) {x--}
-  constructor(Consequent, Chunk) {
-    Object.assign(this, { Consequent, Chunk });
+  constructor(Condition, Chunk) {
+    Object.assign(this, { Condition, Chunk });
   }
 }
 
@@ -100,14 +94,14 @@ export class Range {
 
 export class IfStatement {
   // Example: if x < 3 { shoot() } (elif ....)
-  constructor(test, consequent, alternate) {
-    Object.assign(this, { test, consequent, alternate });
+  constructor(test, chunk, alternate) {
+    Object.assign(this, { test, chunk, alternate });
   }
 }
 
 export class RepeatStatement {
-  constructor(count, body) {
-    Object.assign(this, { count, body });
+  constructor(count, chunk) {
+    Object.assign(this, { count, chunk });
   }
 }
 

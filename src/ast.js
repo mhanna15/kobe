@@ -15,14 +15,20 @@ const astBuilder = kobeGrammar.createSemantics().addOperation("ast", {
       initializer.ast()
     );
   },
-  Statement_coil(_coil, until, chunck) {
-    return new core.CoilStatement(until.ast(), chunck.ast());
+  Statement_coil(_coil, until, chunk) {
+    return new core.CoilStatement(until.ast(), chunk.ast());
   },
-  Statement_grind(_grindUntil, consequent, chunck) {
-    return new core.GrindUntilStatement(consequent.ast(), chunck.ast());
+  Statement_grind(_grindUntil, consequent, chunk) {
+    return new core.GrindUntilStatement(consequent.ast(), chunk.ast());
   },
-  Statement_if(_open, condition, _close, chunck) {
-    return new core.IfStatement(condition.ast(), chunck.ast());
+  Statement_if(_if, condition, chunk, elif) {
+    return new core.IfStatement(condition.ast(), chunk.ast(), elif.ast());
+  },
+  Statement_repeat(_repeat, _open, num, _close, chunk) {
+    return new core.RepeatStatement(num.ast(), chunk.ast());
+  },
+  Elif_elif(_elif, condition, chunk) {
+    return new core.IfStatement(condition.ast(), chunk.ast());
   },
   Until_until(_open, param, _split, range, _close) {
     return new core.UntilRange(param.ast(), range.ast());
@@ -45,11 +51,11 @@ const astBuilder = kobeGrammar.createSemantics().addOperation("ast", {
   Statement_print(_print, argument) {
     return new core.PrintStatement(argument.ast());
   },
-  Statement_while(_grindUntil, test, Chunk) {
-    return new core.WhileStatement(test.ast(), Chunk.ast());
+  Statement_grind(_grindUntil, test, Chunk) {
+    return new core.GrindUntilStatement(test.ast(), Chunk.ast());
   },
   Return_return(_output, expression) {
-    return new core.returnStatement(expression.ast());
+    return new core.OutputStatement(expression.ast());
   },
   Chunk(_open, body, _close) {
     return body.ast();
@@ -111,6 +117,9 @@ const astBuilder = kobeGrammar.createSemantics().addOperation("ast", {
   },
   num(_whole, _point, _fraction) {
     return new core.Token("Num", this.source);
+  },
+  quote(_open, _text, _close) {
+    return new core.Token("Quote", this.source);
   },
   _terminal() {
     return this.sourceString;
