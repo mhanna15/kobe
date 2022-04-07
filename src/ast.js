@@ -15,6 +15,21 @@ const astBuilder = kobeGrammar.createSemantics().addOperation("ast", {
       initializer.ast()
     );
   },
+  Statement_coil(_coil, until, chunck) {
+    return new core.CoilStatement(until.ast(), chunck.ast());
+  },
+  Statement_grind(_grindUntil, consequent, chunck) {
+    return new core.GrindUntilStatement(consequent.ast(), chunck.ast());
+  },
+  Statement_if(_open, condition, _close, chunck) {
+    return new core.IfStatement(condition.ast(), chunck.ast());
+  },
+  Until_until(_open, param, _split, range, _close) {
+    return new core.UntilRange(param.ast(), range.ast());
+  },
+  Range_range(low, _to, high) {
+    return new core.Range(low.ast(), high.ast());
+  },
   Statement_fundec(funcType, _job, id, _open, params, _close, JobChunk) {
     return new core.FunctionDeclaration(
       new core.Function(funcType.ast(), id.ast(), params.asIteration().ast()),

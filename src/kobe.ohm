@@ -5,16 +5,16 @@ Kobe {
             | id "=" Exp                                            -- assign
             | "print" Exp                                           -- print
             | if Exp Chunk ("elif" Exp Chunk)*                      -- if
-            | coil Until Chunk				                              -- loop
-            | grindUntil Exp Chunk                                  -- while
+            | coil Until Chunk				                              -- coil
+            | grindUntil Exp Chunk                                  -- grind
             | sqrt "(" Exp ")"	                                    -- sqrt
             | reps"(" Exp ")" Chunk	                                -- repeat
             | Increment 
             | Call         
   Chunk     = "{" Statement* "}"
   JobChunk  = "{" Statement* (Return)? "}"
-  Until     = "(" Param "," Range ")"
-  Range     =  Exp "to" Exp  
+  Until     = "(" Param "," Range ")"                               -- until
+  Range     =  Exp "to" Exp                                         -- range
   Return    = "output" Exp                                          -- return
 
 

@@ -19,18 +19,16 @@ export class Program {
   }
 }
 
-export class TypeDeclaration {
-  constructor(type) {
-    this.type = type;
-  }
-}
+// export class TypeDeclaration {
+//   constructor(type) {
+//     this.type = type;
+//   }
+// }
 
 export class Type {
-  static BOOLEAN = new Type("boolean");
-  static INT = new Type("int");
-  static FLOAT = new Type("float");
-  static DOUBLE = new Type("double");
-  static STRING = new Type("string");
+  static BAAL = new Type("baal");
+  static NUM = new Type("num");
+  static QUOTE = new Type("quote");
   static VOID = new Type("void");
   //static ANY = new Type("any");
   constructor(description) {
@@ -62,12 +60,6 @@ export class WhileStatement {
   }
 }
 
-export class LoopStatement {
-  constructor(test, body) {
-    Object.assign(this, { test, body });
-  }
-}
-
 export class PrintStatement {
   constructor(argument) {
     Object.assign(this, { argument });
@@ -81,9 +73,28 @@ export class returnStatement {
 }
 
 export class CoilStatement {
-  // Example: coil (num i, 0 to 5) { process(num x); }
-  constructor(variable, low, high, body) {
-    Object.assign(this, { variable, low, high, body });
+  // Example: coil (num i, 0 to 5) { process(i) }
+  constructor(Until, Chunk) {
+    Object.assign(this, { Until, Chunk });
+  }
+}
+
+export class GrindUntilStatement {
+  // Example: grindUntil(x < 5) {x--}
+  constructor(Consequent, Chunk) {
+    Object.assign(this, { Consequent, Chunk });
+  }
+}
+
+export class UntilRange {
+  constructor(Parameter, Range) {
+    Object.assign(this, { Parameter, Range });
+  }
+}
+
+export class Range {
+  constructor(Low, High) {
+    Object.assign(this, { Low, High });
   }
 }
 
@@ -97,19 +108,6 @@ export class IfStatement {
 export class RepeatStatement {
   constructor(count, body) {
     Object.assign(this, { count, body });
-  }
-}
-
-export class ArrayType extends Type {
-  constructor(baseType) {
-    super(`[${baseType.desccription}]`);
-    this.baseType = baseType;
-  }
-}
-
-export class ForStatement {
-  constructor(iterator, collection, body) {
-    Object.assign(this, { iterator, collection, body });
   }
 }
 
