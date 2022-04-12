@@ -1,1 +1,1 @@
-num job addFive(){}
+num job fun(num a, num b) {output a add b } print(fun(a, b))
