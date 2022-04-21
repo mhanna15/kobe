@@ -48,6 +48,13 @@ export class FunctionDeclaration {
   }
 }
 
+export class FunctionType extends Type {
+  constructor(paramTypes, returnType) {
+    super(`(${paramTypes.map((t) => t.name).join(",")})->${returnType.name}`);
+    Object.assign(this, { paramTypes, returnType });
+  }
+}
+
 export class Assignment {
   constructor(target, source) {
     Object.assign(this, { target, source });

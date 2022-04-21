@@ -4,21 +4,30 @@ import ast from "../src/ast.js";
 import analyze from "../src/analyzer.js";
 
 const semanticChecks = [
-    ["variables can be printed", "num x = 1 print(x)"],
-    ["variables can be reassigned", "num x = 1 x = x multiply 5 divide ((-3) add x)"]
+  ["variables can be printed", "num x = 1 print(x)"],
+  [
+    "variables can be reassigned",
+    "num x = 1 x = x multiply 5 divide ((-3) add x)",
+  ],
 ];
 
 const semanticErrors = [
-    ["using undeclared identifiers", "print(x)", /Identifier x not declared/],
-    ["a variable used as function", "num x = 1 x(2)", /x was expected to be a Function/],
-    [
-        "re-declared identifier",
-        "num x = 1 num x = 2",
-        /x has already been declared/,
-    ],
+  ["using undeclared identifiers", "print(x)", /Identifier x not declared/],
+  [
+    "a variable used as function",
+    "num x = 1 x(2)",
+    /x was expected to be a Function/,
+  ],
+  [
+    "re-declared identifier",
+    "num x = 1 num x = 2",
+    /x has already been declared/,
+  ],
 ];
 
-const source = `num championships = 100 num job add(num a, num b) {output a add b}if (championships > 50) {print("You are Kobe")}`;
+const source = `num championships = 100 
+                num job add(num a, num b) {output a add b}
+                if (championships > 50) {print("You are Kobe")}`;
 
 const expected = `   1 | Program statements=[#2,#3,#9]
 2 | VariableDeclaration type='num' variable=(Id,"championships") initializer=(Num,"100")
@@ -33,17 +42,17 @@ const expected = `   1 | Program statements=[#2,#3,#9]
 11 | PrintStatement argument=(Quote,""You are Kobe"")`;
 
 describe("The analyzer", () => {
-    for (const [scenario, source] of semanticChecks) {
-        it(`recognizes ${scenario}`, () => {
-            assert.ok(analyze(ast(source)));
-        });
-    }
-    for (const [scenario, source, errorMessagePattern] of semanticErrors) {
-        it(`throws on ${scenario}`, () => {
-            assert.throws(() => analyze(ast(source)), errorMessagePattern);
-        });
-    }
-    it(`produces the expected graph for the simple sample program`, () => {
-        assert.deepEqual(util.format(analyze(ast(source))), expected);
+  for (const [scenario, source] of semanticChecks) {
+    it(`recognizes ${scenario}`, () => {
+      assert.ok(analyze(ast(source)));
     });
+  }
+  for (const [scenario, source, errorMessagePattern] of semanticErrors) {
+    it(`throws on ${scenario}`, () => {
+      assert.throws(() => analyze(ast(source)), errorMessagePattern);
+    });
+  }
+  it(`produces the expected graph for the simple sample program`, () => {
+    assert.deepEqual(util.format(analyze(ast(source))), expected);
+  });
 });
