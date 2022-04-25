@@ -46,7 +46,7 @@ const astBuilder = kobeGrammar.createSemantics().addOperation("ast", {
     return new core.Parameter(type.ast(), id.ast());
   },
   Statement_assign(id, _eq, expression) {
-    return new core.Assignment(id.ast(), expression.ast());
+    return new core.Reassignment(id.ast(), expression.ast());
   },
   Statement_print(_print, argument) {
     return new core.PrintStatement(argument.ast());

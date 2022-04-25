@@ -19,6 +19,12 @@ export class Program {
   }
 }
 
+export class Chunk {
+  constructor(statements) {
+    this.statements = statements;
+  }
+}
+
 // export class TypeDeclaration {
 //   constructor(type) {
 //     this.type = type;
@@ -55,7 +61,7 @@ export class FunctionType extends Type {
   }
 }
 
-export class Assignment {
+export class Reassignment {
   constructor(target, source) {
     Object.assign(this, { target, source });
   }

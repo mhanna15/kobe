@@ -1,21 +1,87 @@
-import { Variable, Function, error, FunctionType } from "./core.js";
+import {
+  Variable,
+  error,
+  FunctionType,
+  Token,
+  BinaryExpression,
+} from "./core.js";
+
+const check = (self) => ({
+  isNum() {
+    must(["num"].includes(self.type), `Expected a number`);
+  },
+  isBaallean() {
+    must(self.type === "baal", `Expected a baalean`);
+  },
+  isAType() {
+    must(["num", "quote", "baal", "void"].includes(self));
+  },
+  hasSameTypeAs(other) {
+    if (typeof self.type === "quote") {
+      must(self.type === other.type, "Not same type");
+    }
+  },
+  isAssignableTo(type) {
+    if (typeof self.type === "quote") {
+      must(self.type === type, "Not assignable");
+    }
+  },
+  isInsideAFunction(context) {
+    must(self.function, "Output can only appear in a function");
+  },
+  isCallableFromCallee() {
+    must(
+      self.callee.type.constructor == FunctionType,
+      "Call of non-function or non-constructor"
+    );
+  },
+  returnsSomething() {
+    must(self.type.returnType !== Type.VOID, "Cannot return a value here");
+  },
+  isNotReadOnly() {
+    must(!self.readOnly, `Cannot assign to constant ${self.name}`);
+  },
+  isReturnableFrom(f) {
+    check(self).isAssignableTo(f.type.returnType);
+  },
+  match(parameters) {
+    must(
+      parameters.length === self.length,
+      `${parameters.length} argument(s) required but ${self.length} passed`
+    );
+    parameters.forEach((p, i) => check(self[i]).isAssignableTo(p.type));
+  },
+  matchParametersOf(callee) {
+    check(self).match(callee.parameters);
+  },
+});
 
 class Context {
-  constructor(parent = null) {
+  constructor(parent = null, configuration = {}) {
     this.parent = parent;
-    this.locals = new Map();
+    this.variables = new Map();
+    this.functions = configuration.forFunction ?? parent?.function ?? null;
   }
   add(name, entity) {
-    if (this.locals.has(name)) {
+    if (this.variables.has(name)) {
       error(`The identifier ${name} has already been declared`);
     }
-    this.locals.set(name, entity);
+    this.variables.set(name, entity);
     return entity;
+  }
+  lookup(name) {
+    const entity = this.locals.get(name);
+    if (entity) {
+      return entity;
+    } else if (this.parent) {
+      return this.parent.lookup(name);
+    }
+    throw new Error(`Identifier ${name} not declared`);
   }
   get(token, expectedType) {
     let entity;
     for (let context = this; context; context = context.parent) {
-      entity = context.locals.get(token.lexeme);
+      entity = context.variables.get(token.lexeme);
       if (entity) break;
     }
     if (!entity) error(`Identifier ${token.lexeme} not declared`, token);
@@ -37,8 +103,44 @@ class Context {
     // the declaration. That is, "let x=x;" should be an error (unless x
     // was already defined in an outer scope.)
     this.analyze(d.initializer);
+    let varType = d.type.lexeme;
+    let variable = d.variable.lexeme;
+    let initilizer = d.initializer.lexeme;
+    // Make sure variable has not already been declared.
+    if (this.variables.has(variable)) {
+      // If it has, throw!
+      error(`Variable ${variable} already declared`);
+    }
     d.variable.value = new Variable(d.variable.lexeme, false);
     this.add(d.variable.lexeme, d.variable.value);
+
+    let v = new Variable(varType, variable, initilizer);
+
+    // Make sure variable is being initialized to the correct type.
+    if (d.initializer.constructor === Token) {
+      // If initialized to id, make sure id has been declared.
+      if (d.initializer.category === "Id") {
+        if (!this.variables.has(d.initializer.lexeme)) {
+          error(`Initializer ${d.initializer.lexeme} has not been initalized.`);
+        }
+      }
+      if (["Int", "Baal"].includes(d.initializer.category)) {
+        if (d.initializer.category.toLowerCase() !== varType.toLowerCase()) {
+          error(`Initializer type does not match variable type`);
+        }
+      }
+    }
+    // If we initialize our variable to the result of a binary expression ...
+    if (d.initializer.constructor === BinaryExpression) {
+      // Ensure that the variable type is a bool (b/c the result of a binary
+      // expression cannot be anything else.)
+      if (varType !== "baal") {
+        error(
+          `Variable ${variable} is being initalized to result of binary expression but is not type bool`
+        );
+      }
+    }
+    this.variables.set(variable, v);
   }
   FunctionDeclaration(d) {
     const childContext = this.newChild({ inLoop: false, forFunction: d.fun });
@@ -57,27 +159,46 @@ class Context {
     return new Context(this, configuration);
   }
 
-  Assignment(s) {
-    this.analyze(s.source);
-    this.analyze(s.target);
-    if (s.target.value.readOnly) {
-      error(`The identifier ${s.target.lexeme} is read only`, s.target);
-    }
+  Reassignment(s) {
+    s.target = this.lookup(s.target);
+    s.source = this.analyze(s.source);
+    check(s.source).isAssignableTo(s.targets.type);
+    check(s.targets).isNotReadOnly();
+    return s;
   }
+
   WhileStatement(s) {
     this.analyze(s.test);
     this.analyze(s.body);
   }
   PrintStatement(s) {
-    this.analyze(s.argument);
+    if (
+      s.argument.category === "Id" &&
+      !this.variables.has(s.argument.lexeme)
+    ) {
+      error(
+        `Print statement argument "${s.argument.lexeme}" is uninitialized.`
+      );
+    }
   }
   OutputStatement(o) {
     console.log(o);
     this.analyze(o.expression);
   }
   Call(c) {
-    this.analyze(c.args);
-    c.callee.value = this.get(c.callee, Function);
+    c.callee = this.analyze(c.callee);
+    check(c).isCallableFromCallee();
+    c.args = this.analyze(c.args);
+    check(c.args).matchParametersOf(c.callee);
+    c.type = c.callee.returnType;
+    return c;
+  }
+  Call(c) {
+    c.callee = this.analyze(c.callee);
+    check(c).isCallableFromCallee();
+    c.args = this.analyze(c.args);
+    check(c.args).matchParametersOf(c.callee);
+    c.type = c.callee.type;
     const expectedParamCount = c.callee.value.paramCount;
     if (c.args.length !== expectedParamCount) {
       error(
@@ -85,6 +206,7 @@ class Context {
         c.callee
       );
     }
+    return c;
   }
   //fix the below...
   Conditional(c) {
@@ -93,11 +215,50 @@ class Context {
     this.analyze(c.alternate);
   }
   BinaryExpression(e) {
-    this.analyze(e.left);
-    this.analyze(e.right);
+    e.left = this.analyze(e.left);
+    e.right = this.analyze(e.right);
+
+    if (["true", "false"].includes(e.op)) {
+      check(e.left).isBoolean();
+      check(e.right).isBoolean();
+      e.type = "baal";
+    } else if (
+      ["add", "minus", "multiply", "divide", "mod", "to the"].includes(e.op)
+    ) {
+      check(e.left).isNumeric();
+      check(e.left).hasSameTypeAs(e.right);
+      e.type = e.left.type;
+    } else if (["<", ">"].includes(e.op)) {
+      check(e.left).isNumeric();
+      check(e.left).hasSameTypeAs(e.right);
+      e.type = "baal";
+    } else if (["==", "!="].includes(e.op)) {
+      check(e.left).hasSameTypeAs(e.right);
+      e.type = "baal";
+    }
+    return e;
   }
   UnaryExpression(e) {
-    this.analyze(e.operand);
+    e.operand = this.analyze(e.operand);
+    if (e.op === "!") {
+      check(e.operand).isBaalean();
+      e.type = "baal";
+    }
+    return e;
+  }
+  Chunk(c) {
+    c.statements = this.analyze(c.statements);
+    return c;
+  }
+  Increment(s) {
+    s.variable = this.analyze(s.variable);
+    check(s.variable).isInteger();
+    return s;
+  }
+  Decrement(s) {
+    s.variable = this.analyze(s.variable);
+    check(s.variable).isInteger();
+    return s;
   }
   Token(t) {
     // Shortcut: only handle ids that are variables, not functions, here.

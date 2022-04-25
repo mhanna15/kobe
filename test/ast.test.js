@@ -40,10 +40,10 @@ const expected = `   1 | Program statements=[#2,#3,#4,#5,#10,#15,#21,#26]
   21 | GrindUntilStatement Condition=#22 Chunk=[#24]
   22 | BinaryExpression op='<' left=#23 right=(Num,"5")
   23 | UnaryExpression op='sqrt' operand=(Id,"x")
-  24 | Assignment target=(Id,"x") source=#25
+  24 | Reassignment target=(Id,"x") source=#25
   25 | BinaryExpression op='minus' left=(Id,"x") right=(Num,"1")
   26 | RepeatStatement count=(Num,"5") chunk=[#27]
-  27 | Assignment target=(Id,"x") source=#28
+  27 | Reassignment target=(Id,"x") source=#28
   28 | BinaryExpression op='add' left=(Id,"x") right=(Num,"1")`;
 describe("The AST generator", () => {
   it("produces the expected AST for all node types", () => {
