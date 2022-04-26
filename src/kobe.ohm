@@ -2,7 +2,7 @@ Kobe {
   Program   = Statement+
   Statement = Type id "=" Exp                                       -- vardec
             | Type job id "(" Params ")" JobChunk                   -- fundec
-            | id "=" Exp                                            -- assign
+            | id "=" Exp                                            -- reassign
             | "print" Exp                                           -- print
             | if Exp Chunk (Elif)?                                  -- if
             | coil Until Chunk				                              -- coil

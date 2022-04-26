@@ -6,9 +6,18 @@ import {
   BinaryExpression,
 } from "./core.js";
 
+function must(condition, errorMessage) {
+  if (!condition) {
+    throw new Error(errorMessage);
+  }
+}
+
 const check = (self) => ({
-  isNum() {
-    must(["num"].includes(self.type), `Expected a number`);
+  isNum(variables) {
+    must(
+      ["num"].includes(variables.get(self.lexeme).type),
+      `Expected a number`
+    );
   },
   isBaallean() {
     must(self.type === "baal", `Expected a baalean`);
@@ -30,10 +39,7 @@ const check = (self) => ({
     must(self.function, "Output can only appear in a function");
   },
   isCallableFromCallee() {
-    must(
-      self.callee.type.constructor == FunctionType,
-      "Call of non-function or non-constructor"
-    );
+    must(this.funcs.has(self.name), "Call of non-function or non-constructor");
   },
   returnsSomething() {
     must(self.type.returnType !== Type.VOID, "Cannot return a value here");
@@ -60,6 +66,7 @@ class Context {
   constructor(parent = null, configuration = {}) {
     this.parent = parent;
     this.variables = new Map();
+    this.funcs = new Map();
     this.functions = configuration.forFunction ?? parent?.function ?? null;
   }
   add(name, entity) {
@@ -70,7 +77,8 @@ class Context {
     return entity;
   }
   lookup(name) {
-    const entity = this.locals.get(name);
+    const entity = this.variables.get(name);
+
     if (entity) {
       return entity;
     } else if (this.parent) {
@@ -103,7 +111,7 @@ class Context {
     // the declaration. That is, "let x=x;" should be an error (unless x
     // was already defined in an outer scope.)
     this.analyze(d.initializer);
-    let varType = d.type.lexeme;
+    let varType = d.type;
     let variable = d.variable.lexeme;
     let initilizer = d.initializer.lexeme;
     // Make sure variable has not already been declared.
@@ -111,10 +119,11 @@ class Context {
       // If it has, throw!
       error(`Variable ${variable} already declared`);
     }
-    d.variable.value = new Variable(d.variable.lexeme, false);
-    this.add(d.variable.lexeme, d.variable.value);
 
-    let v = new Variable(varType, variable, initilizer);
+    d.variable = new Variable(varType, variable);
+    this.add(d.variable.lexeme, d.variable);
+
+    let v = new Variable(varType, variable);
 
     // Make sure variable is being initialized to the correct type.
     if (d.initializer.constructor === Token) {
@@ -124,7 +133,7 @@ class Context {
           error(`Initializer ${d.initializer.lexeme} has not been initalized.`);
         }
       }
-      if (["Int", "Baal"].includes(d.initializer.category)) {
+      if (["int", "baal"].includes(d.initializer.category)) {
         if (d.initializer.category.toLowerCase() !== varType.toLowerCase()) {
           error(`Initializer type does not match variable type`);
         }
@@ -145,12 +154,16 @@ class Context {
   FunctionDeclaration(d) {
     const childContext = this.newChild({ inLoop: false, forFunction: d.fun });
     d.fun.param.map((p) => childContext.analyze(p));
-    console.log(d.chunk);
+
     d.fun.type = new FunctionType(
       d.fun.param.map((p) => p.type),
       d.fun.returnType
     );
-    this.add(d.fun.id, d.fun);
+    if (this.funcs.has(d.fun.id)) {
+      // If it has, throw!
+      error(`Function ${d.fun.id} already declared`);
+    }
+    this.add(d.fun.id, this.funcs);
     d.chunk.map((c) => childContext.analyze(c));
     return d;
   }
@@ -160,10 +173,9 @@ class Context {
   }
 
   Reassignment(s) {
-    s.target = this.lookup(s.target);
-    s.source = this.analyze(s.source);
-    check(s.source).isAssignableTo(s.targets.type);
-    check(s.targets).isNotReadOnly();
+    s.target = this.lookup(s.target.lexeme);
+    check(s.source).isAssignableTo(s.target);
+    check(s.target).isNotReadOnly();
     return s;
   }
 
@@ -176,13 +188,10 @@ class Context {
       s.argument.category === "Id" &&
       !this.variables.has(s.argument.lexeme)
     ) {
-      error(
-        `Print statement argument "${s.argument.lexeme}" is uninitialized.`
-      );
+      error(`Identifier "${s.argument.lexeme}" not declared`);
     }
   }
   OutputStatement(o) {
-    console.log(o);
     this.analyze(o.expression);
   }
   Call(c) {
@@ -215,9 +224,6 @@ class Context {
     this.analyze(c.alternate);
   }
   BinaryExpression(e) {
-    e.left = this.analyze(e.left);
-    e.right = this.analyze(e.right);
-
     if (["true", "false"].includes(e.op)) {
       check(e.left).isBoolean();
       check(e.right).isBoolean();
@@ -225,11 +231,11 @@ class Context {
     } else if (
       ["add", "minus", "multiply", "divide", "mod", "to the"].includes(e.op)
     ) {
-      check(e.left).isNumeric();
+      check(e.left).isNum(this.variables);
       check(e.left).hasSameTypeAs(e.right);
       e.type = e.left.type;
     } else if (["<", ">"].includes(e.op)) {
-      check(e.left).isNumeric();
+      check(e.left).isNum();
       check(e.left).hasSameTypeAs(e.right);
       e.type = "baal";
     } else if (["==", "!="].includes(e.op)) {
@@ -265,7 +271,7 @@ class Context {
     // We will handle the ids in function calls in the Call() handler. This
     // strategy only works here, but in more complex languages, we would do
     // proper type checking.
-    if (t.category === "Id") t.value = this.get(t, Variable);
+    if (t.category === "Id") t.value = this.get(t.lexeme, Variable);
     if (t.category === "Num") t.value = Number(t.lexeme);
     if (t.category === "Bool") t.value = t.lexeme === "true";
   }
@@ -274,10 +280,11 @@ class Context {
   }
 
   Parameter(p) {
-    //this.analyze(p.type);
-    // console.log(p);
-    // if (p.name instanceof Token) p.type = p.type.value;
-    this.add(p.name.lexeme, p);
+    // p.name = this.analyze(p.name);
+    // p.type = this.analyzeType(p.type);
+    let tempVariable = new Variable(p.type, p.name.lexeme, true);
+    this.add(tempVariable.name, tempVariable);
+    return p;
   }
 
   analyzeType(type) {
@@ -285,22 +292,12 @@ class Context {
       if (["baal", "num", "quote"].includes(type)) {
         return type;
       }
-    } else if (type.constructor === ArrayType) {
-      type.baseType = this.analyzeType(type.baseType);
-      return type;
-    } else {
-      type.keyType = this.analyzeType(type.keyType);
-      type.valueType = this.analyzeType(type.valueType);
-      return type;
     }
   }
 }
 
 export default function analyze(programNode) {
   const initialContext = new Context();
-  //   for (const [name, entity] of Object.entries(standardLibrary)) {
-  //     initialContext.add(name, entity)
-  //   }
   initialContext.analyze(programNode);
   return programNode;
 }

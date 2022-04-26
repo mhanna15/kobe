@@ -5,14 +5,11 @@ import analyze from "../src/analyzer.js";
 
 const semanticChecks = [
   ["variables can be printed", "num x = 1 print(x)"],
-  [
-    "variables can be reassigned",
-    "num x = 1 x = x multiply 5 divide ((-3) add x)",
-  ],
+  ["variables can be reassigned", "num x = 1 x = 2"],
 ];
 
 const semanticErrors = [
-  ["using undeclared identifiers", "print(x)", /Identifier x not declared/],
+  ["using undeclared identifiers", "print(x)", /Identifier "x" not declared/],
   [
     "a variable used as function",
     "num x = 1 x(2)",
@@ -21,7 +18,7 @@ const semanticErrors = [
   [
     "re-declared identifier",
     "num x = 1 num x = 2",
-    /x has already been declared/,
+    /Variable x already declared/,
   ],
 ];
 
