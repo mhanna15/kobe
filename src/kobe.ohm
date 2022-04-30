@@ -7,8 +7,8 @@ Kobe {
             | if Exp Chunk (Elif)?                                  -- if
             | coil Until Chunk				            -- coil
             | grindUntil Exp Chunk                                  -- grind
-            | sqrt"(" Exp ")"	                                   -- sqrt
-            | reps"(" Exp ")" Chunk	                             -- repeat
+            | sqrt"(" Exp ")"	                                    -- sqrt
+            | reps"(" Exp ")" Chunk	                            -- repeat
             | Increment 
             | Call         
   Chunk     = "{" Statement* "}"
@@ -19,7 +19,7 @@ Kobe {
   Return    = "output" Exp                                          -- return
 
 
-  Exp       = ("-" | "!") Exp8                    -- unary
+  Exp       = ("-" | "!") Exp8                                      -- unary
             | Exp1
   Exp1      = Exp1 "or" Exp2                                        -- binary
             | Exp2
@@ -34,7 +34,7 @@ Kobe {
   Exp6      = Exp6  ("multiply" | "divide" | "mod") Exp7            -- binary
             | Exp7
   Exp7       = Exp7 "to the" Exp8                                   -- binary
-            | sqrt Exp8 										                        -- unary
+            | sqrt Exp8                                             -- unary
             | Exp8
   Exp8       = num
             | baal
