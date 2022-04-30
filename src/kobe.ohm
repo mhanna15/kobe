@@ -5,7 +5,7 @@ Kobe {
             | id "=" Exp                                            -- reassign
             | "print" Exp                                           -- print
             | if Exp Chunk (Elif)?                                  -- if
-            | coil Until Chunk				                              -- coil
+            | coil Until Chunk				                     -- coil
             | grindUntil Exp Chunk                                  -- grind
             | sqrt"(" Exp ")"	                                      -- sqrt
             | reps"(" Exp ")" Chunk	                                -- repeat
