@@ -199,14 +199,6 @@ class Context {
     check(c).isCallableFromCallee();
     c.args = this.analyze(c.args);
     check(c.args).matchParametersOf(c.callee);
-    c.type = c.callee.returnType;
-    return c;
-  }
-  Call(c) {
-    c.callee = this.analyze(c.callee);
-    check(c).isCallableFromCallee();
-    c.args = this.analyze(c.args);
-    check(c.args).matchParametersOf(c.callee);
     c.type = c.callee.type;
     const expectedParamCount = c.callee.value.paramCount;
     if (c.args.length !== expectedParamCount) {
