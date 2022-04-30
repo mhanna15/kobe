@@ -165,7 +165,6 @@ class Context {
     }
     this.add(d.fun.id, this.funcs);
     d.chunk.map((c) => childContext.analyze(c));
-    return d;
   }
 
   newChild(configuration = {}) {
@@ -176,7 +175,6 @@ class Context {
     s.target = this.lookup(s.target.lexeme);
     check(s.source).isAssignableTo(s.target);
     check(s.target).isNotReadOnly();
-    return s;
   }
 
   IfStatement(s) {
@@ -211,7 +209,6 @@ class Context {
         c.callee
       );
     }
-    return c;
   }
   //fix the below...
   Conditional(c) {
@@ -240,7 +237,6 @@ class Context {
       check(e.left).hasSameTypeAs(e.right);
       e.type = "baal";
     }
-    return e;
   }
   UnaryExpression(e) {
     e.operand = this.analyze(e.operand);
@@ -248,21 +244,17 @@ class Context {
       check(e.operand).isBaalean();
       e.type = "baal";
     }
-    return e;
   }
   Chunk(c) {
     c.statements = this.analyze(c.statements);
-    return c;
   }
   Increment(s) {
     s.variable = this.analyze(s.variable);
     check(s.variable).isInteger();
-    return s;
   }
   Decrement(s) {
     s.variable = this.analyze(s.variable);
     check(s.variable).isInteger();
-    return s;
   }
   Token(t) {
     // Shortcut: only handle ids that are variables, not functions, here.
@@ -292,7 +284,6 @@ class Context {
     // p.type = this.analyzeType(p.type);
     let tempVariable = new Variable(p.type, p.name.lexeme, true);
     this.add(tempVariable.name, tempVariable);
-    return p;
   }
 
   analyzeType(type) {
