@@ -13,11 +13,8 @@ function must(condition, errorMessage) {
 }
 
 const check = (self) => ({
-  isNum(variables) {
-    must(
-      ["num"].includes(variables.get(self.lexeme).type),
-      `Expected a number`
-    );
+  isNum() {
+    must(self.type === "num", `Expected a number`);
   },
   isBaallean() {
     must(self.type === "baal", `Expected a baalean`);
@@ -38,8 +35,11 @@ const check = (self) => ({
   isInsideAFunction(context) {
     must(self.function, "Output can only appear in a function");
   },
-  isCallableFromCallee() {
-    must(this.funcs.has(self.name), "Call of non-function or non-constructor");
+  isCallableFromCallee(context) {
+    must(
+      context.funcs.has(self.name),
+      "Call of non-function or non-constructor"
+    );
   },
   returnsSomething() {
     must(self.type.returnType !== Type.VOID, "Cannot return a value here");
@@ -86,15 +86,15 @@ class Context {
     }
     throw new Error(`Identifier ${name} not declared`);
   }
-  get(token, expectedType) {
+  get(name, expectedType) {
     let entity;
     for (let context = this; context; context = context.parent) {
-      entity = context.variables.get(token.lexeme);
+      entity = context.variables.get(name);
       if (entity) break;
     }
-    if (!entity) error(`Identifier ${token.lexeme} not declared`, token);
+    if (!entity) error(`Identifier ${name} not declared`);
     if (entity.constructor !== expectedType) {
-      error(`${token.lexeme} was expected to be a ${expectedType.name}`, token);
+      error(`${name} was expected to be a ${expectedType.name}`);
     }
     return entity;
   }
@@ -179,8 +179,17 @@ class Context {
     return s;
   }
 
+  IfStatement(s) {
+    this.analyze(s.test);
+    // TODO: check boolean test
+    this.analyze(s.chunk);
+    if (s.alternate) {
+      this.analyze(s.alternate);
+    }
+  }
   WhileStatement(s) {
     this.analyze(s.test);
+    // TODO: check boolean test
     this.analyze(s.body);
   }
   PrintStatement(s) {
@@ -196,7 +205,7 @@ class Context {
   }
   Call(c) {
     c.callee = this.analyze(c.callee);
-    check(c).isCallableFromCallee();
+    check(c).isCallableFromCallee(this);
     c.args = this.analyze(c.args);
     check(c.args).matchParametersOf(c.callee);
     c.type = c.callee.type;
@@ -216,6 +225,8 @@ class Context {
     this.analyze(c.alternate);
   }
   BinaryExpression(e) {
+    this.analyze(e.left);
+    this.analyze(e.right);
     if (["true", "false"].includes(e.op)) {
       check(e.left).isBoolean();
       check(e.right).isBoolean();
@@ -223,7 +234,7 @@ class Context {
     } else if (
       ["add", "minus", "multiply", "divide", "mod", "to the"].includes(e.op)
     ) {
-      check(e.left).isNum(this.variables);
+      check(e.left).isNum();
       check(e.left).hasSameTypeAs(e.right);
       e.type = e.left.type;
     } else if (["<", ">"].includes(e.op)) {
@@ -263,7 +274,11 @@ class Context {
     // We will handle the ids in function calls in the Call() handler. This
     // strategy only works here, but in more complex languages, we would do
     // proper type checking.
-    if (t.category === "Id") t.value = this.get(t.lexeme, Variable);
+    if (t.category === "Id") {
+      const entity = this.get(t.lexeme, Variable);
+      t.value = entity;
+      t.type = entity.type;
+    }
     if (t.category === "Num") t.value = Number(t.lexeme);
     if (t.category === "Bool") t.value = t.lexeme === "true";
   }

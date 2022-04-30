@@ -35,7 +35,7 @@ Kobe {
             | Exp7
 
   Exp7       = Exp7 "to the" Exp8                                    -- binary
-  			    | sqrt Exp8 										                        -- unary
+  			    | sqrt Exp8 										                         -- unary
             | Exp8
 
   Exp8       = num
