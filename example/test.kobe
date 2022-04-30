@@ -1,3 +1,1 @@
-num championships = 100 
-                num job add(num a, num b) {output a add b}
-                if (championships > 50) {print("You are Kobe")}
+print(1 add 2)

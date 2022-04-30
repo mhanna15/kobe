@@ -5,9 +5,10 @@ import process from "process";
 import compile from "./compiler.js";
 
 const help = `Kobe compiler
-Syntax: node bella.js <filename> <outputType>
+Syntax: node kobe.js <filename> <outputType>
 Prints to stdout according to <outputType>, which must be one of:
   ast        the abstract syntax tree
+  analyzed   the decorated abstract syntax tree
   js         the translation to JavaScript
 `;
 

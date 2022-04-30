@@ -1,28 +1,28 @@
-// CODE GENERATOR: Carlos -> JavaScript
+// CODE GENERATOR: Kobe -> JavaScript
 //
 // Invoke generate(program) with the program node to get back the JavaScript
 // translation as a string.
 
-import { IfStatement, Type, StructType } from "./core.js";
-import * as stdlib from "./stdlib.js";
+import { IfStatement, Type } from "./core.js";
+// import * as stdlib from "./stdlib.js";
 
 export default function generate(program) {
   const output = [];
 
-  const standardFunctions = new Map([
-    [stdlib.contents.print, (x) => `console.log(${x})`],
-    [stdlib.contents.sin, (x) => `Math.sin(${x})`],
-    [stdlib.contents.cos, (x) => `Math.cos(${x})`],
-    [stdlib.contents.exp, (x) => `Math.exp(${x})`],
-    [stdlib.contents.ln, (x) => `Math.log(${x})`],
-    [stdlib.contents.hypot, ([x, y]) => `Math.hypot(${x},${y})`],
-    [stdlib.contents.bytes, (s) => `[...Buffer.from(${s}, "utf8")]`],
-    [stdlib.contents.codepoints, (s) => `[...(${s})].map(s=>s.codePointAt(0))`],
-  ]);
+  // const standardFunctions = new Map([
+  //   [stdlib.contents.print, (x) => `console.log(${x})`],
+  //   [stdlib.contents.sin, (x) => `Math.sin(${x})`],
+  //   [stdlib.contents.cos, (x) => `Math.cos(${x})`],
+  //   [stdlib.contents.exp, (x) => `Math.exp(${x})`],
+  //   [stdlib.contents.ln, (x) => `Math.log(${x})`],
+  //   [stdlib.contents.hypot, ([x, y]) => `Math.hypot(${x},${y})`],
+  //   [stdlib.contents.bytes, (s) => `[...Buffer.from(${s}, "utf8")]`],
+  //   [stdlib.contents.codepoints, (s) => `[...(${s})].map(s=>s.codePointAt(0))`],
+  // ]);
 
   // Variable and function names in JS will be suffixed with _1, _2, _3,
-  // etc. This is because "switch", for example, is a legal name in Carlos,
-  // but not in JS. So, the Carlos variable "switch" must become something
+  // etc. This is because "switch", for example, is a legal name in Kobe,
+  // but not in JS. So, the Kobe variable "switch" must become something
   // like "switch_1". We handle this by mapping each name to its suffix.
   const targetName = ((mapping) => {
     return (entity) => {
@@ -49,7 +49,7 @@ export default function generate(program) {
       output.push(`${gen(d.type)} ${gen(d.variable)} = ${gen(d.initializer)};`);
     },
     TypeDeclaration(d) {
-      // The only type declaration in Carlos is the struct! Becomes a JS class.
+      // The only type declaration in Kobe is the struct! Becomes a JS class.
       output.push(`class ${gen(d.type)} {`);
       output.push(`constructor(${gen(d.type.fields).join(",")}) {`);
       for (let field of d.type.fields) {
@@ -76,9 +76,9 @@ export default function generate(program) {
     },
     Variable(v) {
       // Standard library constants just get special treatment
-      if (v === stdlib.contents.π) {
-        return "Math.PI";
-      }
+      // if (v === stdlib.contents.π) {
+      //   return "Math.PI";
+      // }
       return targetName(v);
     },
     Function(f) {
@@ -145,6 +145,9 @@ export default function generate(program) {
       gen(s.body);
       output.push("}");
     },
+    PrintStatement(s) {
+      output.push(`console.log(${gen(s.argument)})`);
+    },
     Conditional(e) {
       return `((${gen(e.test)}) ? (${gen(e.consequent)}) : (${gen(
         e.alternate
@@ -186,6 +189,9 @@ export default function generate(program) {
     },
     Quote(e) {
       return e;
+    },
+    Array(a) {
+      a.forEach(gen);
     },
   };
 

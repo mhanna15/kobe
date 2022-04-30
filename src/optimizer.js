@@ -142,6 +142,10 @@ const optimizers = {
     }
     return s;
   },
+  PrintStatement(s) {
+    s.argument = optimize(s.argument);
+    return s;
+  },
   BinaryExpression(e) {
     e.op = optimize(e.op);
     e.left = optimize(e.left);
@@ -207,6 +211,9 @@ const optimizers = {
     return e;
   },
   Quote(e) {
+    return e;
+  },
+  String(e) {
     return e;
   },
   Token(t) {

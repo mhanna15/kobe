@@ -193,12 +193,7 @@ class Context {
     this.analyze(s.body);
   }
   PrintStatement(s) {
-    if (
-      s.argument.category === "Id" &&
-      !this.variables.has(s.argument.lexeme)
-    ) {
-      error(`Identifier "${s.argument.lexeme}" not declared`);
-    }
+    this.analyze(s.argument);
   }
   OutputStatement(o) {
     this.analyze(o.expression);
@@ -279,8 +274,14 @@ class Context {
       t.value = entity;
       t.type = entity.type;
     }
-    if (t.category === "Num") t.value = Number(t.lexeme);
-    if (t.category === "Bool") t.value = t.lexeme === "true";
+    if (t.category === "Num") {
+      t.value = Number(t.lexeme);
+      t.type = "num";
+    }
+    if (t.category === "Bool") {
+      t.value = t.lexeme === "true";
+      t.type = "baal";
+    }
   }
   Array(a) {
     a.forEach((item) => this.analyze(item));
