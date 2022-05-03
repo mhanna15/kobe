@@ -9,7 +9,7 @@ const semanticChecks = [
 ];
 
 const semanticErrors = [
-  ["using undeclared identifiers", "print(x)", /Identifier "x" not declared/],
+  ["using undeclared identifiers", "print(x)", /Identifier x not declared/],
   [
     "a variable used as function",
     "num x = 1 x(2)",
